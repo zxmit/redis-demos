@@ -1,6 +1,6 @@
 package com.zxm.redis.redisson.practice;
 
-import com.zxm.redis.redisson.utils.ClientCreator;
+import com.kingcobra.rredis.RedisConnector;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.FutureListener;
 import org.redisson.api.RFuture;
@@ -16,9 +16,11 @@ import java.util.List;
 public class QueueOperator {
 
     private RedissonClient redisson;
+    private RedisConnector connector;
 
     public QueueOperator() {
-        redisson = ClientCreator.createInstance();
+        connector = RedisConnector.getInstance();
+        redisson = connector.getRedisClient();
     }
 
     public void addSync(String key, String value) {
@@ -54,7 +56,7 @@ public class QueueOperator {
     }
 
     public void close() {
-        redisson.shutdown();
+        connector.closeClient(redisson);
     }
 
     public static void main(String[] args) {

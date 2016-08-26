@@ -1,13 +1,10 @@
 package com.zxm.redis.redisson.practice.multipmap;
 
-import com.zxm.redis.redisson.practice.QueueOperator;
-import com.zxm.redis.redisson.utils.ClientCreator;
-import org.redisson.api.RListMultimap;
+import com.kingcobra.rredis.RedisConnector;
 import org.redisson.api.RSetMultimap;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,10 +12,12 @@ import java.util.Set;
  */
 public class SetMultimapOperator {
 
+    private RedisConnector connector;
     private RedissonClient redisson;
 
     public SetMultimapOperator() {
-        redisson = ClientCreator.createInstance();
+        connector = RedisConnector.getInstance();
+        redisson = connector.getRedisClient();
     }
 
     public void add(String key) {
@@ -49,13 +48,13 @@ public class SetMultimapOperator {
         if(map.size() == 0) return;
         map.remove(mkey, mvalue);
     }
-    
+
     public long delKeys(String... keys) {
         return redisson.getKeys().delete(keys);
     }
 
     public void close() {
-        redisson.shutdown();
+        connector.closeClient(redisson);
     }
 
     public static void main(String[] args) {

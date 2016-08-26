@@ -1,7 +1,6 @@
 package com.zxm.redis.redisson.practice.cache;
 
-import com.zxm.redis.redisson.practice.QueueOperator;
-import com.zxm.redis.redisson.utils.ClientCreator;
+import com.kingcobra.rredis.RedisConnector;
 import org.redisson.api.RSetCache;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
@@ -14,10 +13,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class SetCacheOperator {
 
+    private RedisConnector connector;
     private RedissonClient redisson;
 
     public SetCacheOperator() {
-        redisson = ClientCreator.createInstance();
+        connector = RedisConnector.getInstance();
+        redisson = connector.getRedisClient();
     }
 
     public void add(String key, long ttl) {
@@ -35,7 +36,7 @@ public class SetCacheOperator {
     }
 
     public void close() {
-        redisson.shutdown();
+        connector.closeClient(redisson);
     }
 
     public static void main(String[] args) throws InterruptedException {

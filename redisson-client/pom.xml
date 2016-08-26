@@ -22,6 +22,13 @@
             <artifactId>netty-all</artifactId>
             <version>4.0.39.Final</version>
         </dependency>
+        <dependency>
+            <groupId>com.kingcobra</groupId>
+            <artifactId>redisConnection</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>/Users/zxm/IdeaProjects/Works/redis-demos/redisson-client/target/RedisConnection-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
 
     </dependencies>
 

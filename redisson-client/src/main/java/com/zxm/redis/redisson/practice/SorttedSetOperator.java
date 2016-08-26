@@ -1,6 +1,6 @@
 package com.zxm.redis.redisson.practice;
 
-import com.zxm.redis.redisson.utils.ClientCreator;
+import com.kingcobra.rredis.RedisConnector;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.FutureListener;
 import org.redisson.api.RFuture;
@@ -17,9 +17,11 @@ import java.util.concurrent.ExecutionException;
 public class SorttedSetOperator {
 
     private RedissonClient redisson;
+    private RedisConnector connector;
 
     public SorttedSetOperator() {
-        redisson = ClientCreator.createInstance();
+        connector = RedisConnector.getInstance();
+        redisson = connector.getRedisClient();
     }
 
     public void addSync(String key, int value) {
@@ -65,7 +67,7 @@ public class SorttedSetOperator {
     }
 
     public void close() {
-        redisson.shutdown();
+        connector.closeClient(redisson);
     }
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {

@@ -1,10 +1,6 @@
 package com.zxm.redis.redisson.practice.multipmap;
 
-import com.zxm.redis.redisson.practice.QueueOperator;
-import com.zxm.redis.redisson.utils.ClientCreator;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.FutureListener;
-import org.redisson.api.RFuture;
+import com.kingcobra.rredis.RedisConnector;
 import org.redisson.api.RListMultimap;
 import org.redisson.api.RQueue;
 import org.redisson.api.RedissonClient;
@@ -17,10 +13,12 @@ import java.util.List;
  */
 public class ListMultimapOperator {
 
+    private RedisConnector connector;
     private RedissonClient redisson;
 
     public ListMultimapOperator() {
-        redisson = ClientCreator.createInstance();
+        connector = RedisConnector.getInstance();
+        redisson = connector.getRedisClient();
     }
 
     public void add(String key) {
@@ -57,7 +55,7 @@ public class ListMultimapOperator {
     }
 
     public void close() {
-        redisson.shutdown();
+        connector.closeClient(redisson);
     }
 
     public static void main(String[] args) {
